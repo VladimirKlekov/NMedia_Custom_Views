@@ -10,6 +10,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.BounceInterpolator
 import android.view.animation.LinearInterpolator
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import ru.netology.nmedia.R
@@ -20,28 +21,32 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         val view = findViewById<StatsView>(R.id.stats)
         view.postDelayed({
             view.data = listOf(
-                0.25F,
-                0.25F,
+                1F,
                 0.25F,
                 0.25F,
             )
         }, 3000)
 
-val label = findViewById<TextView>(R.id.label)
+        val label = findViewById<TextView>(R.id.label)
+        val labelEnd = findViewById<TextView>(R.id.label_end)
+        val labelImage = findViewById<ImageView>(R.id.label_image)
 
         val viewAnim = AnimationUtils.loadAnimation(
             this, R.anim.view_animation
         ).apply {
             setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation?) {
-                    label.text = "started"
+                    label.text = "РАСЧЕТ"
+                    labelImage.setImageResource(R.drawable.avatar_net)
                 }
 
                 override fun onAnimationEnd(animation: Animation?) {
-                    label.text = "ended"
+                    label.text = "ИТОГО"
+                    labelEnd.text = "СПАСИБО ЗА ПОМОЩЬ!!!"
                 }
 
                 override fun onAnimationRepeat(animation: Animation?) {
@@ -53,7 +58,7 @@ val label = findViewById<TextView>(R.id.label)
 
         view.startAnimation(viewAnim)
 
-        ObjectAnimator.ofFloat(view, "alpha", 0.25F,1F).apply {
+        ObjectAnimator.ofFloat(view, "alpha", 0.25F, 1F).apply {
             startDelay = 500
             duration = 300
             interpolator = BounceInterpolator()
