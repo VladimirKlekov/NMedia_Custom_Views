@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|center_horizontal" />
 
+
     <ru.netology.statsview.ui.StatsView
         android:id="@+id/stats"
         android:layout_width="300dp"

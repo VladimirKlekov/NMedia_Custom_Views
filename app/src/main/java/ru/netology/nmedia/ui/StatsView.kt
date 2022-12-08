@@ -13,6 +13,7 @@ import android.view.animation.LinearInterpolator
 import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
 import androidx.core.graphics.drawable.toDrawable
+import kotlinx.coroutines.delay
 import ru.netology.nmedia.R
 import ru.netology.nmedia.util.AndroidUtils
 import kotlin.math.min
@@ -48,7 +49,7 @@ class StatsView @JvmOverloads constructor(
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         strokeWidth = lineWidth
-        strokeCap = Paint.Cap.ROUND
+        strokeCap = Paint.Cap.BUTT
         strokeJoin = Paint.Join.ROUND
     }
     private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -78,12 +79,20 @@ class StatsView @JvmOverloads constructor(
         }
 
         var startFrom = -90F
-        for ((index, datum) in data.withIndex()) {
-            val angle = 360F * datum
-            paint.color = colors.getOrNull(index) ?: randomColor()
-            canvas.drawArc(oval, startFrom, angle * progress, false, paint)
+
+        data.forEach {
+            val angle = it*360F
+            paint.color = randomColor()
+            canvas.drawArc(oval, startFrom, angle, false, paint)
             startFrom += angle
+
         }
+//        for ((index, datum) in data.withIndex()) {
+//            val angle = 360F * datum
+//            paint.color = colors.getOrNull(index) ?: randomColor()
+//            canvas.drawArc(oval, startFrom, angle * progress, false, paint)
+//            startFrom += angle
+//        }
 
         canvas.drawText(
             "%.2f%%".format(data.sum() * 100),
