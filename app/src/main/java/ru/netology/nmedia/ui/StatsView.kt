@@ -29,6 +29,7 @@ class StatsView @JvmOverloads constructor(
     private var radius = 0F
     private var center = PointF(0F, 0F)
     private var oval = RectF(0F, 0F, 0F, 0F)
+    private var bottomText = PointF(0F, 0F)
 
     private var lineWidth = AndroidUtils.dp(context, 5F).toFloat()
     private var fontSize = AndroidUtils.dp(context, 40F).toFloat()
@@ -65,8 +66,9 @@ class StatsView @JvmOverloads constructor(
         }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        radius = min(w, h) / 2F - lineWidth / 2
+        radius = min(w, h) / 2.2F - lineWidth / 2
         center = PointF(w / 2F, h / 2F)
+        bottomText = PointF(w / 2F, h / 8F)
         oval = RectF(
             center.x - radius, center.y - radius,
             center.x + radius, center.y + radius,
@@ -74,33 +76,43 @@ class StatsView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
+
         if (data.isEmpty()) {
             return
         }
 
         var startFrom = -90F
 
-        data.forEach {
-            val angle = it*360F
-            paint.color = randomColor()
-            canvas.drawArc(oval, startFrom, angle, false, paint)
-            startFrom += angle
+            data.forEach() { line ->
+                val count = data.sum()
 
-        }
+                val angle = line * 360F/count
+                paint.color = Random.nextInt(0xFF000000.toInt(), 0xFFFFFFFF.toInt())
+                canvas.drawArc(oval, startFrom, angle* progress, false, paint)
+                //Thread.sleep(2000)
+                startFrom += angle
+
+            }
 //        for ((index, datum) in data.withIndex()) {
-//            val angle = 360F * datum
+//            val count = data.sum()
+//            val angle = 360F/count * datum
 //            paint.color = colors.getOrNull(index) ?: randomColor()
 //            canvas.drawArc(oval, startFrom, angle * progress, false, paint)
 //            startFrom += angle
+//
 //        }
 
-        canvas.drawText(
-            "%.2f%%".format(data.sum() * 100),
-            center.x,
-            center.y + textPaint.textSize / 4,
-            textPaint,
-        )
-    }
+            canvas.drawText(
+                "%.2f%%".format(data.sum() * 100),
+                bottomText.x,
+                bottomText.y + textPaint.textSize / 4,
+//            center.x,
+//            center.y + textPaint.textSize / 4,
+                textPaint,
+            )
+
+        }
+
 
     private fun update() {
         valueAnimator?.let {

@@ -6,21 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".ui.AppActivity">
 
+    <ImageView
+        android:id="@+id/label_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
     <TextView
         android:id="@+id/label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|center_horizontal" />
+        android:paddingTop="20dp"
+        android:layout_gravity="top|center_horizontal"
+        />
 
+    <TextView
+        android:id="@+id/label_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:textSize = "18dp" />
 
     <ru.netology.statsview.ui.StatsView
         android:id="@+id/stats"
         android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_height="500dp"
         android:layout_gravity="center"
         app:lineWidth="20dp"
         app:fontSize="50dp"
         app:colors="@array/colors"
         />
 </FrameLayout>
+
 
